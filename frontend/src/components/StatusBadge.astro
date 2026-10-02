@@ -1,0 +1,27 @@
+---
+/** Badge de statut : pilule, icône + mot, fond -soft et texte de la couleur d'état (classes des jetons). */
+import Icon from './Icon.astro';
+
+type Variant = 'brouillon' | 'attente' | 'valide' | 'urgent' | 'perinatal' | 'osme';
+
+interface Props {
+  variant: Variant;
+  label: string;
+}
+
+const icons: Record<Variant, string> = {
+  brouillon: 'pencil',
+  attente: 'hourglass-split',
+  valide: 'check-circle',
+  urgent: 'exclamation-octagon',
+  perinatal: 'heart-pulse',
+  osme: 'bookmark',
+};
+
+const { variant, label } = Astro.props;
+---
+
+<span class:list={['osme-badge', `osme-badge--${variant}`]}>
+  <Icon name={icons[variant]} size={16} />
+  {label}
+</span>

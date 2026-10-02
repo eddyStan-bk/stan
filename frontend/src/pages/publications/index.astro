@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PublicationCard from '../../components/PublicationCard.astro';
+import { getPublications } from '../../lib/publications';
+
+const publications = await getPublications();
+---
+
+<BaseLayout
+  title="Publications"
+  description="Rapports, bulletins et notes méthodologiques de l’Observatoire de santé de la mère et de l’enfant."
+>
+  <div class="page-head">
+    <div class="container">
+      <h1>Publications</h1>
+      <p class="lead">Rapports, bulletins et notes méthodologiques de l’Observatoire.</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container">
+      {
+        publications.length > 0 ? (
+          <div class="grid grid--3">
+            {publications.map((pub) => (
+              <PublicationCard publication={pub} />
+            ))}
+          </div>
+        ) : (
+          <p class="muted">Aucune publication pour le moment.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

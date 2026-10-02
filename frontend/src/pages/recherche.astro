@@ -1,0 +1,86 @@
+---
+/**
+ * Recherche plein texte avec Pagefind : l'index est produit après le build (`npm run build`)
+ * dans dist/_recherche/, servi localement, sans service externe.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Rechercher" description="Rechercher dans les indicateurs et les publications de l’OSME." searchable={false}>
+  <link slot="head" rel="stylesheet" href="/_recherche/pagefind-ui.css" />
+  <div class="page-head">
+    <div class="container">
+      <h1>Rechercher</h1>
+      <p class="lead">Dans les indicateurs, les publications et les pages du portail.</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div id="recherche" class="search">
+        <noscript>
+          <p>La recherche nécessite JavaScript. Vous pouvez parcourir les <a href="/publications/">publications</a> et les <a href="/indicateurs/">indicateurs</a>.</p>
+        </noscript>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline src="/_recherche/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof PagefindUI === 'undefined') {
+      document.getElementById('recherche').insertAdjacentHTML(
+        'beforeend',
+        '<p>La recherche est disponible une fois le site compilé (<code>npm run build</code>).</p>',
+      );
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const ui = new PagefindUI({
+      element: '#recherche',
+      bundlePath: '/_recherche/',
+      showImages: false,
+      showSubResults: true,
+      resetStyles: false,
+      translations: {
+        placeholder: 'Rechercher un indicateur, une publication…',
+        clear_search: 'Effacer',
+        load_more: 'Afficher plus de résultats',
+        search_label: 'Rechercher sur le portail',
+        zero_results: 'Aucun résultat pour « [SEARCH_TERM] ».',
+        many_results: '[COUNT] résultats pour « [SEARCH_TERM] »',
+        one_result: '1 résultat pour « [SEARCH_TERM] »',
+        searching: 'Recherche de « [SEARCH_TERM] »…',
+      },
+    });
+    const q = params.get('q');
+    if (q) ui.triggerSearch(q);
+  });
+</script>
+
+<style>
+  /* Pagefind UI aligné sur les jetons de la charte. */
+  .search {
+    max-width: 75ch;
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--osme-violet);
+    --pagefind-ui-text: var(--osme-ink);
+    --pagefind-ui-background: var(--osme-surface);
+    --pagefind-ui-border: var(--osme-line-input);
+    --pagefind-ui-tag: var(--osme-violet-soft);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: var(--osme-radius-sm);
+    --pagefind-ui-font: var(--osme-font-sans);
+  }
+
+  .search :global(mark) {
+    background: var(--osme-violet-soft);
+    color: var(--osme-ink);
+    font-weight: 600;
+  }
+
+  .search :global(.pagefind-ui__search-clear) {
+    font: var(--osme-text-label);
+    color: var(--osme-violet);
+  }
+</style>

@@ -1,0 +1,226 @@
+---
+/**
+ * En-tête du portail : blanc, logo à gauche, menu, recherche, « Se connecter » en bouton secondaire.
+ * Menu mobile sans JavaScript (élément <details>).
+ */
+import Icon from './Icon.astro';
+import { HAS_LOGO_MARK, LOGIN_URL, LOGO_MARK_URL, NAV, SITE_NAME, SITE_SHORT, isCurrent } from '../lib/site';
+
+const path = Astro.url.pathname;
+const searchCurrent = isCurrent(path, '/recherche/');
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label={`${SITE_SHORT}, ${SITE_NAME} — accueil`}>
+      {HAS_LOGO_MARK && <img class="brand__mark" src={LOGO_MARK_URL} alt="" width="40" height="40" />}
+      <span class="brand__text">
+        <span class="brand__short">{SITE_SHORT}</span>
+        <span class="brand__name">{SITE_NAME}</span>
+      </span>
+    </a>
+
+    <nav class="nav nav--desktop" aria-label="Navigation principale">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(path, item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="icon-link" href="/recherche/" aria-label="Rechercher sur le portail" aria-current={searchCurrent ? 'page' : undefined}>
+        <Icon name="search" />
+      </a>
+      <a class="button button--secondary" href={LOGIN_URL}>
+        <Icon name="box-arrow-in-right" />
+        Se connecter
+      </a>
+    </nav>
+
+    <details class="nav nav--mobile">
+      <summary class="button button--secondary">
+        <Icon name="list" class="when-closed" />
+        <Icon name="x-lg" class="when-open" />
+        Menu
+      </summary>
+      <div class="nav__panel">
+        <ul>
+          {
+            NAV.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isCurrent(path, item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/recherche/" aria-current={searchCurrent ? 'page' : undefined}>
+              <Icon name="search" /> Rechercher
+            </a>
+          </li>
+        </ul>
+        <a class="button button--secondary nav__login" href={LOGIN_URL}>
+          <Icon name="box-arrow-in-right" />
+          Se connecter
+        </a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 20;
+    background: var(--osme-surface);
+    border-bottom: 1px solid var(--osme-line);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--osme-space-4);
+    min-height: 72px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--osme-space-3);
+    min-height: 44px;
+    color: var(--osme-ink);
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .brand__mark {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .brand__short {
+    font: 600 20px/24px var(--osme-font-display);
+    color: var(--osme-violet);
+    letter-spacing: 0.02em;
+  }
+
+  .brand__name {
+    font: var(--osme-text-caption);
+    color: var(--osme-ink-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav a:not(.button) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--osme-space-2);
+    min-height: 44px;
+    padding-inline: var(--osme-space-3);
+    border-radius: var(--osme-radius-sm);
+    color: var(--osme-ink);
+    font: var(--osme-text-label);
+    text-decoration: none;
+  }
+
+  .nav a:not(.button):hover {
+    color: var(--osme-violet);
+    background: var(--osme-violet-soft);
+  }
+
+  .nav a[aria-current='page'] {
+    color: var(--osme-violet);
+    background: var(--osme-violet-soft);
+  }
+
+  .nav--desktop {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .nav--desktop {
+      display: flex;
+      align-items: center;
+      gap: var(--osme-space-2);
+    }
+
+    .nav--desktop ul {
+      display: flex;
+      gap: var(--osme-space-1);
+    }
+
+    .nav--mobile {
+      display: none;
+    }
+  }
+
+  .icon-link {
+    justify-content: center;
+    width: 44px;
+    padding-inline: 0 !important;
+  }
+
+  .nav--mobile summary {
+    list-style: none;
+  }
+
+  .nav--mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav--mobile :global(.when-open),
+  .nav--mobile[open] :global(.when-closed) {
+    display: none;
+  }
+
+  .nav--mobile[open] :global(.when-open) {
+    display: inline;
+  }
+
+  .nav__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    padding: var(--osme-space-4);
+    background: var(--osme-surface-raised);
+    border-bottom: 1px solid var(--osme-line);
+    box-shadow: var(--osme-shadow-md);
+  }
+
+  .nav__panel li a {
+    width: 100%;
+  }
+
+  .nav__login {
+    width: 100%;
+    margin-top: var(--osme-space-4);
+  }
+
+  @media (max-width: 389.98px) {
+    .brand__name {
+      display: none;
+    }
+  }
+</style>

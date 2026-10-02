@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToComplete from '../components/ToComplete.astro';
+---
+
+<BaseLayout
+  title="Protection des données"
+  description="Comment l’OSME protège les données de santé et les données personnelles : portail public, application de surveillance, droits des personnes."
+>
+  <div class="page-head">
+    <div class="container">
+      <h1>Protection des données</h1>
+      <p class="lead">
+        L’OSME traite des données de santé sensibles : des décès de femmes et de nouveau-nés. Leur confidentialité passe
+        avant toute autre considération.
+      </p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container prose">
+      <h2>Sur ce portail public</h2>
+      <ul>
+        <li>Seuls des <strong>chiffres agrégés</strong> sont publiés. Aucun nom, aucune date de naissance, aucune combinaison de lieu et de date permettant de reconnaître une personne n’apparaît.</li>
+        <li>Les effectifs <strong>inférieurs à 5 cas</strong> par zone de santé et par mois sont masqués.</li>
+        <li>Le portail ne dépose <strong>aucun cookie</strong> de mesure d’audience ou de publicité et ne charge <strong>aucune ressource externe</strong> : polices, icônes et scripts sont servis depuis nos serveurs.</li>
+        <li>Les journaux techniques du serveur (adresse IP, page demandée, date) sont conservés par l’hébergeur pour la sécurité du service. <ToComplete what="durée de conservation des journaux" /></li>
+      </ul>
+
+      <h2>Dans l’application de surveillance</h2>
+      <p>
+        Les dossiers de décès sont saisis dans un espace sécurisé, réservé aux personnes habilitées : collecteurs,
+        agents de santé, superviseurs, chercheurs autorisés et administrateurs.
+      </p>
+      <ul>
+        <li>Chaque personne n’accède qu’aux informations nécessaires à son rôle ; les agents de santé ne voient que les dossiers de leur structure.</li>
+        <li>Les pièces cliniques sont stockées hors de l’espace public du serveur et ne sont transmises qu’après contrôle du rôle de la personne qui les demande.</li>
+        <li>Toute création, modification, validation ou suppression de dossier est enregistrée dans un journal d’audit.</li>
+        <li>Les demandes d’accès à des fins de recherche sont examinées au cas par cas, au regard de ces règles de confidentialité.</li>
+      </ul>
+
+      <h2>Lettre d’information</h2>
+      <p>
+        Si vous vous abonnez aux publications de l’OSME, votre adresse électronique sert uniquement à l’envoi de ces
+        publications. Vous pouvez vous désabonner à tout moment sur simple demande.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Vous pouvez demander l’accès aux données vous concernant, leur rectification ou leur suppression, en écrivant à
+        l’équipe de l’OSME : <ToComplete what="adresse électronique de contact pour la protection des données" />
+      </p>
+    </div>
+  </section>
+</BaseLayout>

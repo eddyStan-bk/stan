@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChartBlock from '../../components/ChartBlock.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import Icon from '../../components/Icon.astro';
+import KpiCard from '../../components/KpiCard.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import ZoneTable from '../../components/ZoneTable.astro';
+import { loadIndicators } from '../../lib/data';
+import { kpis, periodLabel, perinatalTrend, updatedLabel } from '../../lib/indicators-view';
+
+const data = await loadIndicators();
+const cards = data
+  ? kpis(data).filter((k) => k.id === 'perinatal' || k.id === 'zones')
+  : [];
+---
+
+<BaseLayout
+  title="Mortalité périnatale"
+  description="Mortinaissances et décès néonatals précoces notifiés et validés par l’OSME : évolution mensuelle et répartition par zone de santé."
+>
+  <div class="page-head">
+    <div class="container">
+      <nav class="crumbs small" aria-label="Fil d’Ariane">
+        <a href="/indicateurs/"><Icon name="arrow-left" size={16} /> Indicateurs</a>
+      </nav>
+      <StatusBadge variant="perinatal" label="Volet enfant" />
+      <h1>Mortalité périnatale</h1>
+      <p class="lead">
+        Mortinaissances et décès d’enfants nés vivants survenus au cours des sept premiers jours de vie, selon les
+        définitions du dispositif national de surveillance.
+      </p>
+    </div>
+  </div>
+
+  {
+    data ? (
+      <>
+        <section class="section section--alt" aria-labelledby="chiffres">
+          <div class="container">
+            <SectionTitle id="chiffres" title="Les chiffres clés" intro={`${periodLabel(data)}. Mise à jour le ${updatedLabel(data)}.`} />
+            <div class="kpi-grid">
+              {cards.map((kpi) => (
+                <KpiCard {...kpi} />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section class="section" aria-labelledby="evolution">
+          <div class="container">
+            <SectionTitle id="evolution" title="Évolution mensuelle" />
+            <ChartBlock {...perinatalTrend(data)} source={data.source} period={periodLabel(data)} updated={updatedLabel(data)} height={340} />
+          </div>
+        </section>
+        <section class="section section--alt" aria-labelledby="zones">
+          <div class="container">
+            <SectionTitle
+              id="zones"
+              title="Par zone de santé"
+              intro="Les effectifs inférieurs à 5 cas sont masqués pour qu’aucune personne ne puisse être reconnue."
+            />
+            <ZoneTable data={data} show="perinatal" />
+          </div>
+        </section>
+      </>
+    ) : (
+      <section class="section">
+        <div class="container">
+          <EmptyState />
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    min-height: 44px;
+  }
+
+  .page-head h1 {
+    margin-top: var(--osme-space-3);
+  }
+
+  .kpi-grid {
+    display: grid;
+    gap: var(--osme-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  @media (min-width: 768px) {
+    .kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+/**
+ * Motif de l'arc (repris du logo) : filet courbe violet-logo sous un titre de section.
+ * Un arc par bloc au maximum, jamais en fond répété.
+ */
+interface Props {
+  width?: number;
+  class?: string;
+}
+const { width = 72, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['arc', className]}
+  width={width}
+  height={width / 6}
+  viewBox="0 0 72 12"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M2 10 C 20 1, 52 1, 70 10" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+</svg>
+
+<style>
+  .arc {
+    display: block;
+    color: var(--osme-violet-logo);
+  }
+</style>

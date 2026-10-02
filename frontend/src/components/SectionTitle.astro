@@ -1,0 +1,36 @@
+---
+/** Titre de section du portail souligné par l'arc (un seul par bloc). */
+import Arc from './Arc.astro';
+
+interface Props {
+  title: string;
+  id?: string;
+  intro?: string;
+  level?: 'h1' | 'h2';
+  arc?: boolean;
+}
+const { title, id, intro, level = 'h2', arc = true } = Astro.props;
+const Heading = level;
+---
+
+<header class="section-title">
+  <Heading id={id}>{title}</Heading>
+  {arc && <Arc />}
+  {intro && <p class="lead">{intro}</p>}
+</header>
+
+<style>
+  .section-title {
+    margin-bottom: var(--osme-space-8);
+  }
+
+  .section-title :global(h1),
+  .section-title :global(h2) {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .section-title .lead {
+    max-width: 65ch;
+    margin: var(--osme-space-4) 0 0;
+  }
+</style>

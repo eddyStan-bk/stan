@@ -1,0 +1,44 @@
+---
+/**
+ * Icône Bootstrap Icons insérée en SVG au build (aucune police d'icônes ni JS).
+ * Décorative par défaut ; passer `label` pour une icône seule porteuse de sens.
+ */
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+
+interface Props {
+  name: string;
+  size?: 16 | 20 | 24 | 32;
+  label?: string;
+  class?: string;
+}
+
+const { name, size = 20, label, class: className } = Astro.props;
+
+if (!/^[a-z0-9-]+$/.test(name)) throw new Error(`[OSME] Nom d'icône invalide : ${name}`);
+
+const require = createRequire(import.meta.url);
+const raw = readFileSync(require.resolve(`bootstrap-icons/icons/${name}.svg`), 'utf8');
+const inner = raw.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 16 16"
+  fill="currentColor"
+  class:list={['icon', className]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+  set:html={inner}
+/>
+
+<style>
+  .icon {
+    flex: none;
+    vertical-align: -0.15em;
+  }
+</style>

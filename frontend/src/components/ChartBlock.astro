@@ -1,0 +1,126 @@
+---
+/**
+ * Graphique du portail : titre sous forme de question, île Chart.js chargée à la visibilité,
+ * source / période / mise à jour en légende, et équivalent tableau (« Voir les données »).
+ */
+import Icon from './Icon.astro';
+import type { ChartSpec } from '../lib/chart-spec';
+
+interface Column {
+  label: string;
+  numeric?: boolean;
+}
+
+interface Props {
+  /** Question à laquelle le graphique répond. */
+  question: string;
+  spec: ChartSpec;
+  /** Résumé textuel de ce que montre le graphique (lu par les lecteurs d'écran). */
+  summary: string;
+  source: string;
+  period: string;
+  updated: string;
+  table: { columns: Column[]; rows: string[][] };
+  height?: number;
+}
+
+const { question, spec, summary, source, period, updated, table, height = 300 } = Astro.props;
+---
+
+<figure class="chart-block card">
+  <h3 class="chart-block__title">{question}</h3>
+  <p class="chart-block__summary small muted">{summary}</p>
+  <div class="chart-block__canvas" style={`height: ${height}px`}>
+    <canvas data-osme-chart={JSON.stringify(spec)} role="img" aria-label={`${question} ${summary}`}></canvas>
+  </div>
+  <figcaption class="caption">
+    Source : {source}. Période : {period}. Mise à jour : {updated}.
+  </figcaption>
+  <details class="chart-block__data">
+    <summary class="button button--discreet">
+      <Icon name="table" size={16} />
+      Voir les données
+    </summary>
+    <div class="table-scroll">
+      <table class="data-table">
+        <caption>{question}</caption>
+        <thead>
+          <tr>
+            {table.columns.map((col) => <th scope="col" class:list={{ num: col.numeric }}>{col.label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            table.rows.map((row) => (
+              <tr>
+                {row.map((cell, i) =>
+                  i === 0 ? (
+                    <th scope="row">{cell}</th>
+                  ) : (
+                    <td class:list={{ num: table.columns[i]?.numeric }}>{cell}</td>
+                  ),
+                )}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+  // Île : Chart.js n'est téléchargé que lorsqu'un graphique approche de la zone visible.
+  const canvases = document.querySelectorAll<HTMLCanvasElement>('canvas[data-osme-chart]');
+  if (canvases.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          import('../lib/charts')
+            .then(({ renderChart }) => renderChart(entry.target as HTMLCanvasElement))
+            .catch(() => entry.target.closest('figure')?.querySelector('details')?.setAttribute('open', ''));
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    canvases.forEach((canvas) => observer.observe(canvas));
+  }
+</script>
+
+<style>
+  .chart-block {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--osme-space-3);
+    min-width: 0;
+  }
+
+  .chart-block__title {
+    margin: 0;
+  }
+
+  .chart-block__summary {
+    margin: 0;
+  }
+
+  .chart-block__canvas {
+    position: relative;
+    width: 100%;
+  }
+
+  .chart-block__data summary {
+    list-style: none;
+    padding-inline: 0;
+  }
+
+  .chart-block__data summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .chart-block__data[open] summary {
+    margin-bottom: var(--osme-space-3);
+  }
+</style>

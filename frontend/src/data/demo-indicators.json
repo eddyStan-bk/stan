@@ -1,0 +1,181 @@
+{
+  "generated_at": "2026-10-01T06:00:00Z",
+  "source": "Données fictives de démonstration — ne pas citer",
+  "scope": "territoire de démonstration",
+  "period": {
+    "start": "2025-10-01",
+    "end": "2026-09-30"
+  },
+  "kpis": {
+    "maternal_deaths": {
+      "value": 118,
+      "previous": 134
+    },
+    "perinatal_deaths": {
+      "value": 851,
+      "previous": 902
+    },
+    "maternal_reviewed_pct": {
+      "value": 71.2,
+      "previous": 63.4
+    },
+    "reporting_zones": {
+      "value": 8,
+      "previous": 7
+    }
+  },
+  "monthly": [
+    {
+      "month": "2025-10",
+      "maternal": 11,
+      "maternal_previous": 12,
+      "stillbirths": 44,
+      "early_neonatal": 33
+    },
+    {
+      "month": "2025-11",
+      "maternal": 9,
+      "maternal_previous": 13,
+      "stillbirths": 41,
+      "early_neonatal": 30
+    },
+    {
+      "month": "2025-12",
+      "maternal": 12,
+      "maternal_previous": 11,
+      "stillbirths": 47,
+      "early_neonatal": 35
+    },
+    {
+      "month": "2026-01",
+      "maternal": 10,
+      "maternal_previous": 12,
+      "stillbirths": 43,
+      "early_neonatal": 31
+    },
+    {
+      "month": "2026-02",
+      "maternal": 8,
+      "maternal_previous": 10,
+      "stillbirths": 38,
+      "early_neonatal": 29
+    },
+    {
+      "month": "2026-03",
+      "maternal": 11,
+      "maternal_previous": 12,
+      "stillbirths": 45,
+      "early_neonatal": 32
+    },
+    {
+      "month": "2026-04",
+      "maternal": 10,
+      "maternal_previous": 11,
+      "stillbirths": 42,
+      "early_neonatal": 34
+    },
+    {
+      "month": "2026-05",
+      "maternal": 9,
+      "maternal_previous": 10,
+      "stillbirths": 40,
+      "early_neonatal": 30
+    },
+    {
+      "month": "2026-06",
+      "maternal": 10,
+      "maternal_previous": 12,
+      "stillbirths": 39,
+      "early_neonatal": 28
+    },
+    {
+      "month": "2026-07",
+      "maternal": 9,
+      "maternal_previous": 11,
+      "stillbirths": 37,
+      "early_neonatal": 29
+    },
+    {
+      "month": "2026-08",
+      "maternal": 10,
+      "maternal_previous": 10,
+      "stillbirths": 36,
+      "early_neonatal": 27
+    },
+    {
+      "month": "2026-09",
+      "maternal": 9,
+      "maternal_previous": 10,
+      "stillbirths": 35,
+      "early_neonatal": 26
+    }
+  ],
+  "maternal_causes": [
+    {
+      "label": "Hémorragies",
+      "count": 41
+    },
+    {
+      "label": "Troubles hypertensifs",
+      "count": 23
+    },
+    {
+      "label": "Infections",
+      "count": 17
+    },
+    {
+      "label": "Complications d’avortement",
+      "count": 11
+    },
+    {
+      "label": "Rupture utérine",
+      "count": 9
+    },
+    {
+      "label": "Autres causes",
+      "count": 17
+    }
+  ],
+  "by_zone": [
+    {
+      "zone": "Zone de santé A",
+      "maternal": 30,
+      "perinatal": 210
+    },
+    {
+      "zone": "Zone de santé B",
+      "maternal": 26,
+      "perinatal": 180
+    },
+    {
+      "zone": "Zone de santé C",
+      "maternal": 21,
+      "perinatal": 150
+    },
+    {
+      "zone": "Zone de santé D",
+      "maternal": 17,
+      "perinatal": 120
+    },
+    {
+      "zone": "Zone de santé E",
+      "maternal": 12,
+      "perinatal": 90
+    },
+    {
+      "zone": "Zone de santé F",
+      "maternal": 8,
+      "perinatal": 60
+    },
+    {
+      "zone": "Zone de santé G",
+      "maternal": null,
+      "perinatal": 26
+    },
+    {
+      "zone": "Zone de santé H",
+      "maternal": null,
+      "perinatal": 15
+    }
+  ]
+}

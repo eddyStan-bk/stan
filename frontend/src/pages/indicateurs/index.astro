@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChartBlock from '../../components/ChartBlock.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import Icon from '../../components/Icon.astro';
+import KpiCard from '../../components/KpiCard.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import ZoneTable from '../../components/ZoneTable.astro';
+import { loadIndicators } from '../../lib/data';
+import { kpis, maternalTrend, periodLabel, perinatalTrend, updatedLabel } from '../../lib/indicators-view';
+
+const data = await loadIndicators();
+const modules = [
+  {
+    href: '/indicateurs/mortalite-maternelle/',
+    title: 'Mortalité maternelle',
+    text: 'Décès de femmes pendant la grossesse, l’accouchement ou dans les 42 jours qui suivent : évolution, causes et revues.',
+    icon: 'person-heart',
+    accent: 'violet',
+  },
+  {
+    href: '/indicateurs/mortalite-perinatale/',
+    title: 'Mortalité périnatale',
+    text: 'Mortinaissances et décès de nouveau-nés au cours des sept premiers jours de vie.',
+    icon: 'heart-pulse',
+    accent: 'sarcelle',
+  },
+];
+---
+
+<BaseLayout
+  title="Indicateurs"
+  description="Indicateurs agrégés de mortalité maternelle et périnatale publiés par l’OSME : chiffres clés, évolution mensuelle et répartition par zone de santé."
+>
+  <div class="page-head">
+    <div class="container">
+      <h1>Indicateurs</h1>
+      <p class="lead">
+        {
+          data
+            ? `Décès maternels et périnatals notifiés et validés, ${data.scope}, ${periodLabel(data)}. Mise à jour le ${updatedLabel(data)}.`
+            : 'Décès maternels et périnatals notifiés et validés par le dispositif de surveillance.'
+        }
+      </p>
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="modules">
+    <div class="container">
+      <h2 id="modules" class="visually-hidden">Volets de la surveillance</h2>
+      <div class="grid grid--2">
+        {
+          modules.map((m) => (
+            <a class:list={['module card', `module--${m.accent}`]} href={m.href}>
+              <Icon name={m.icon} size={32} class="module__icon" />
+              <span class="module__title">{m.title}</span>
+              <span class="module__text">{m.text}</span>
+              <span class="module__more">
+                Voir les indicateurs
+                <Icon name="arrow-right" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    data ? (
+      <>
+        <section class="section section--alt" aria-labelledby="chiffres">
+          <div class="container">
+            <SectionTitle id="chiffres" title="Les chiffres clés" />
+            <div class="kpi-grid">
+              {kpis(data).map((kpi) => (
+                <KpiCard {...kpi} />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section class="section" aria-labelledby="evolution">
+          <div class="container">
+            <SectionTitle id="evolution" title="Évolution mensuelle" />
+            <div class="grid grid--2">
+              {[maternalTrend(data), perinatalTrend(data)].map((chart) => (
+                <ChartBlock {...chart} source={data.source} period={periodLabel(data)} updated={updatedLabel(data)} />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section class="section section--alt" aria-labelledby="zones">
+          <div class="container">
+            <SectionTitle
+              id="zones"
+              title="Par zone de santé"
+              intro="Les effectifs inférieurs à 5 cas sont masqués pour qu’aucune personne ne puisse être reconnue."
+            />
+            <ZoneTable data={data} />
+          </div>
+        </section>
+      </>
+    ) : (
+      <section class="section section--alt">
+        <div class="container">
+          <EmptyState />
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .module {
+    display: flex;
+    flex-direction: column;
+    gap: var(--osme-space-3);
+    min-height: 44px;
+    border-radius: var(--osme-radius-lg);
+    color: var(--osme-ink);
+    text-decoration: none;
+  }
+
+  .module:hover {
+    border-color: var(--osme-violet);
+    box-shadow: var(--osme-shadow-md);
+  }
+
+  .module--sarcelle:hover {
+    border-color: var(--osme-sarcelle);
+  }
+
+  .module :global(.module__icon) {
+    color: var(--osme-violet);
+  }
+
+  .module--sarcelle :global(.module__icon) {
+    color: var(--osme-sarcelle);
+  }
+
+  .module__title {
+    font: var(--osme-text-h3);
+  }
+
+  .module__text {
+    color: var(--osme-ink-muted);
+    max-width: 55ch;
+  }
+
+  .module__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    margin-top: auto;
+    font: var(--osme-text-label);
+    color: var(--osme-violet);
+  }
+
+  .module--sarcelle .module__more {
+    color: var(--osme-sarcelle);
+  }
+
+  .kpi-grid {
+    display: grid;
+    gap: var(--osme-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    .kpi-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--osme-space-6);
+    }
+  }
+</style>

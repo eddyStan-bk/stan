@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChartBlock from '../../components/ChartBlock.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import Icon from '../../components/Icon.astro';
+import KpiCard from '../../components/KpiCard.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import ZoneTable from '../../components/ZoneTable.astro';
+import { loadIndicators } from '../../lib/data';
+import { kpis, maternalCauses, maternalTrend, periodLabel, updatedLabel } from '../../lib/indicators-view';
+
+const data = await loadIndicators();
+const cards = data ? kpis(data).filter((k) => k.id !== 'perinatal') : [];
+---
+
+<BaseLayout
+  title="Mortalité maternelle"
+  description="Décès maternels notifiés et validés par l’OSME : évolution mensuelle, causes et répartition par zone de santé."
+>
+  <div class="page-head">
+    <div class="container">
+      <nav class="crumbs small" aria-label="Fil d’Ariane">
+        <a href="/indicateurs/"><Icon name="arrow-left" size={16} /> Indicateurs</a>
+      </nav>
+      <h1>Mortalité maternelle</h1>
+      <p class="lead">
+        Décès d’une femme pendant la grossesse ou dans les 42 jours suivant sa fin, pour une cause liée à la grossesse
+        ou aggravée par elle, ni accidentelle ni fortuite.
+      </p>
+    </div>
+  </div>
+
+  {
+    data ? (
+      <>
+        <section class="section section--alt" aria-labelledby="chiffres">
+          <div class="container">
+            <SectionTitle id="chiffres" title="Les chiffres clés" intro={`${periodLabel(data)}. Mise à jour le ${updatedLabel(data)}.`} />
+            <div class="kpi-grid">
+              {cards.map((kpi) => (
+                <KpiCard {...kpi} />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section class="section" aria-labelledby="analyses">
+          <div class="container">
+            <SectionTitle id="analyses" title="Évolution et causes" />
+            <div class="grid grid--2">
+              <ChartBlock {...maternalTrend(data)} source={data.source} period={periodLabel(data)} updated={updatedLabel(data)} />
+              <ChartBlock
+                {...maternalCauses(data)}
+                source={`${data.source}, décès revus en comité`}
+                period={periodLabel(data)}
+                updated={updatedLabel(data)}
+                height={320}
+              />
+            </div>
+          </div>
+        </section>
+        <section class="section section--alt" aria-labelledby="zones">
+          <div class="container">
+            <SectionTitle
+              id="zones"
+              title="Par zone de santé"
+              intro="Les effectifs inférieurs à 5 cas sont masqués pour qu’aucune personne ne puisse être reconnue."
+            />
+            <ZoneTable data={data} show="maternal" />
+          </div>
+        </section>
+      </>
+    ) : (
+      <section class="section">
+        <div class="container">
+          <EmptyState />
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    min-height: 44px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    gap: var(--osme-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+</style>

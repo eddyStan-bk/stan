@@ -1,0 +1,104 @@
+---
+/**
+ * Carte indicateur : libellé au-dessus, valeur en Lexend 40, période et source dessous,
+ * variation avec flèche ET mot (jamais la couleur seule).
+ */
+import Icon from './Icon.astro';
+import type { Variation } from '../lib/format';
+
+interface Props {
+  label: string;
+  value: string;
+  /** Unité ou dénominateur affiché après la valeur. */
+  unit?: string;
+  period: string;
+  source: string;
+  variation?: Variation | null;
+  icon: string;
+  /** sarcelle : volet enfant / périnatal. */
+  accent?: 'violet' | 'sarcelle';
+}
+
+const { label, value, unit, period, source, variation, icon, accent = 'violet' } = Astro.props;
+const arrow = { up: 'arrow-up-right', down: 'arrow-down-right', stable: 'arrow-right' } as const;
+---
+
+<article class:list={['kpi card', `kpi--${accent}`]}>
+  <p class="kpi__label">
+    <Icon name={icon} class="kpi__icon" />
+    {label}
+  </p>
+  <p class="kpi__value">
+    <span class="osme-num">{value}</span>
+    {unit && <span class="kpi__unit">{unit}</span>}
+  </p>
+  {
+    variation && (
+      <p class="kpi__trend">
+        <Icon name={arrow[variation.trend]} size={16} />
+        {variation.text}
+      </p>
+    )
+  }
+  <p class="kpi__meta caption">
+    {period}
+    <br />
+    Source : {source}
+  </p>
+</article>
+
+<style>
+  .kpi {
+    display: flex;
+    flex-direction: column;
+    gap: var(--osme-space-2);
+    min-width: 0;
+  }
+
+  .kpi p {
+    margin: 0;
+  }
+
+  .kpi__label {
+    display: flex;
+    align-items: center;
+    gap: var(--osme-space-2);
+    font: var(--osme-text-small);
+    color: var(--osme-ink-muted);
+  }
+
+  .kpi__label :global(.kpi__icon) {
+    color: var(--osme-violet);
+  }
+
+  .kpi--sarcelle .kpi__label :global(.kpi__icon) {
+    color: var(--osme-sarcelle);
+  }
+
+  .kpi__value {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--osme-space-2);
+    font: var(--osme-text-kpi);
+    color: var(--osme-ink);
+  }
+
+  .kpi__unit {
+    font: var(--osme-text-small);
+    color: var(--osme-ink-muted);
+  }
+
+  .kpi__trend {
+    display: flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    font: var(--osme-text-label);
+    color: var(--osme-ink);
+  }
+
+  .kpi__meta {
+    margin-top: auto !important;
+    padding-top: var(--osme-space-2);
+  }
+</style>

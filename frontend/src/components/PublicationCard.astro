@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import StatusBadge from './StatusBadge.astro';
+import { formatDate } from '../lib/format';
+import type { PublicationItem } from '../lib/publications';
+
+interface Props {
+  publication: PublicationItem;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { publication, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+const href = `/publications/${publication.slug}/`;
+---
+
+<article class="pub card">
+  <StatusBadge variant="osme" label={publication.category} />
+  <Heading class="pub__title h3">
+    <a href={href}>{publication.title}</a>
+  </Heading>
+  <p class="pub__summary">{publication.summary}</p>
+  <p class="pub__date caption">
+    <Icon name="calendar3" size={16} />
+    <time datetime={publication.date}>{formatDate(publication.date)}</time>
+  </p>
+</article>
+
+<style>
+  .pub {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--osme-space-3);
+  }
+
+  .pub:hover {
+    border-color: var(--osme-violet);
+  }
+
+  .pub__title {
+    margin: 0;
+  }
+
+  .pub__title a {
+    color: var(--osme-ink);
+    text-decoration: none;
+  }
+
+  /* Toute la carte est cliquable, le lien reste le seul élément focalisable. */
+  .pub__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .pub__title a:hover {
+    color: var(--osme-violet);
+  }
+
+  .pub:focus-within {
+    outline: 2px solid var(--osme-focus);
+    outline-offset: 2px;
+  }
+
+  .pub__title a:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .pub__summary {
+    margin: 0;
+    color: var(--osme-ink-muted);
+  }
+
+  .pub__date {
+    display: flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    margin: auto 0 0;
+  }
+</style>

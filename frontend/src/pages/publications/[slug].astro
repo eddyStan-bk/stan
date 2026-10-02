@@ -1,0 +1,76 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Arc from '../../components/Arc.astro';
+import Icon from '../../components/Icon.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { formatDate } from '../../lib/format';
+import { getPublications, render, type PublicationItem } from '../../lib/publications';
+
+export const getStaticPaths = (async () => {
+  const publications = await getPublications();
+  return publications.map((publication) => ({ params: { slug: publication.slug }, props: { publication } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  publication: PublicationItem;
+}
+
+const { publication } = Astro.props;
+const Content = publication.entry ? (await render(publication.entry)).Content : null;
+---
+
+<BaseLayout title={publication.title} description={publication.summary} ogType="article">
+  <article>
+    <header class="page-head">
+      <div class="container">
+        <nav class="crumbs small" aria-label="Fil d’Ariane">
+          <a href="/publications/">
+            <Icon name="arrow-left" size={16} />
+            Publications
+          </a>
+        </nav>
+        <StatusBadge variant="osme" label={publication.category} />
+        <h1>{publication.title}</h1>
+        <Arc width={96} />
+        <p class="lead">{publication.summary}</p>
+        <p class="caption">
+          Publié le <time datetime={publication.date}>{formatDate(publication.date)}</time>
+        </p>
+      </div>
+    </header>
+    <div class="section">
+      <div class="container">
+        <div class="prose">
+          {Content ? <Content /> : <Fragment set:html={publication.html} />}
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: var(--osme-space-4);
+  }
+
+  .crumbs a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--osme-space-1);
+    min-height: 44px;
+  }
+
+  .page-head h1 {
+    margin-top: var(--osme-space-4);
+    max-width: 30ch;
+  }
+
+  .page-head .lead {
+    margin-top: var(--osme-space-4);
+  }
+
+  .page-head .caption {
+    margin: var(--osme-space-4) 0 0;
+  }
+</style>

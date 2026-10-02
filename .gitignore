@@ -1,0 +1,26 @@
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Archives et sauvegardes (ne jamais publier une copie du code ou de la base)
+*.zip
+*.tar
+*.gz
+*.7z
+*.bak
+*.sql
+!database/migrations/*.sql
+
+# Pièces cliniques et téléversements
+storage/private/
+uploads/
+
+# Portail Astro
+frontend/node_modules/
+frontend/dist/
+frontend/.astro/
+
+# Divers
+.DS_Store
+Thumbs.db

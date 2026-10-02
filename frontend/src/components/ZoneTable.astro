@@ -1,0 +1,71 @@
+---
+/** Décès par zone de santé : petits effectifs masqués (« < 5 »), cartes empilées sur mobile. */
+import type { Indicators } from '../lib/types';
+import { zoneRows, periodLabel } from '../lib/indicators-view';
+import { SMALL_CELL_THRESHOLD } from '../lib/format';
+
+interface Props {
+  data: Indicators;
+  show?: 'both' | 'maternal' | 'perinatal';
+}
+
+const { data, show = 'both' } = Astro.props;
+const rows = zoneRows(data);
+const withMaternal = show !== 'perinatal';
+const withPerinatal = show !== 'maternal';
+---
+
+<div class="zone-table">
+  <table class="data-table data-table--stack">
+    <caption>
+      Décès notifiés par zone de santé, {periodLabel(data)}. « &lt; {SMALL_CELL_THRESHOLD} » : effectif masqué pour
+      protéger la confidentialité.
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Zone de santé</th>
+        {withMaternal && <th scope="col" class="num">Décès maternels</th>}
+        {withPerinatal && <th scope="col" class="num">Décès périnatals</th>}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <th scope="row">{row.zone}</th>
+            {withMaternal && (
+              <td class="num" data-label="Décès maternels">
+                {row.maternal}
+              </td>
+            )}
+            {withPerinatal && (
+              <td class="num" data-label="Décès périnatals">
+                {row.perinatal}
+              </td>
+            )}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="caption">Source : {data.source}. Les zones sans décès notifié sur la période n’apparaissent pas.</p>
+</div>
+
+<style>
+  .zone-table {
+    background: var(--osme-surface-raised);
+    border: 1px solid var(--osme-line);
+    border-radius: var(--osme-radius-md);
+    padding: var(--osme-space-4);
+  }
+
+  @media (min-width: 768px) {
+    .zone-table {
+      padding: var(--osme-space-6);
+    }
+  }
+
+  .zone-table .caption {
+    margin: var(--osme-space-3) 0 0;
+  }
+</style>

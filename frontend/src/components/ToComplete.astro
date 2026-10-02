@@ -1,0 +1,23 @@
+---
+/**
+ * Information institutionnelle manquante, à fournir par l'équipe de l'OSME avant mise en production.
+ * Rendue de façon visible (et signalée dans le journal de build) pour ne jamais passer inaperçue.
+ */
+interface Props {
+  what: string;
+}
+const { what } = Astro.props;
+console.warn(`[OSME][portail] Information à compléter sur ${Astro.url.pathname} : ${what}`);
+---
+
+<mark class="to-complete">À compléter : {what}</mark>
+
+<style>
+  .to-complete {
+    padding: 0 var(--osme-space-1);
+    border-radius: var(--osme-radius-sm);
+    background: var(--osme-warning-soft);
+    color: var(--osme-warning);
+    font-weight: 600;
+  }
+</style>

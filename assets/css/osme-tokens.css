@@ -1,0 +1,160 @@
+/*!
+ * OSME — jetons de la charte graphique (source : docs/CHARTE_GRAPHIQUE.md).
+ * Fichier généré à partir de tokens.json : modifier les jetons, pas les valeurs en dur.
+ * À charger APRÈS bootstrap.min.css et APRÈS les anciennes feuilles (mystyle.css, etc.).
+ */
+
+/* Polices auto-hébergées (placer les WOFF2 dans assets/fonts/) */
+@font-face { font-family: "Lexend"; src: url("../fonts/lexend-latin-variable.woff2") format("woff2"); font-weight: 500 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonts/source-sans-3-latin-variable.woff2") format("woff2"); font-weight: 400 700; font-style: normal; font-display: swap; }
+
+:root {
+  color-scheme: light;
+  --osme-surface: #FFFFFF;  /* Fond de page (portail public et application). */
+  --osme-surface-alt: #F7F5FA;  /* Sections alternées, fond de la barre latérale, en-têtes de tableaux. */
+  --osme-surface-raised: #FFFFFF;  /* Cartes, modales, menus déroulants posés sur surface-alt. */
+  --osme-line: #E3DEEA;  /* Filets, séparateurs, bordures de cartes et de tableaux (décoratif, non porteur d'information). */
+  --osme-line-input: #8C8499;  /* Bordure des champs de formulaire, cases et boutons radio (3:1 sur surface). */
+  --osme-ink: #1C1726;  /* Texte principal sur surface, surface-alt, surface-raised et violet-soft. */
+  --osme-ink-muted: #5D566A;  /* Texte secondaire, métadonnées, légendes, aides de saisie, sur toutes les surfaces. */
+  --osme-violet: #6B2FB3;  /* Couleur d'action OSME : bouton principal, liens, onglet actif, icônes actives. Texte lisible sur les surfaces et violet-soft. */
+  --osme-violet-logo: #8B46C9;  /* Violet exact du logo. Aplats de marque, illustrations, arcs décoratifs, texte ≥24 px seulement (3,35:1 en sombre). */
+  --osme-violet-deep: #34175C;  /* Bandeaux institutionnels, pied de page, en-tête du portail public. Texte : on-violet (clair) ou ink (sombre). */
+  --osme-violet-soft: #F3ECFB;  /* Fond teinté derrière du texte violet : badges, ligne sélectionnée, encadrés d'information OSME. */
+  --osme-on-violet: #FFFFFF;  /* Texte et icônes posés sur un aplat violet ou violet-logo (libellé du bouton principal). */
+  --osme-sarcelle: #0B6F6E;  /* Accent secondaire : santé de l'enfant, nouveau-né, module périnatal. Texte lisible sur surface et sarcelle-soft. */
+  --osme-sarcelle-soft: #E3F3F2;  /* Fond teinté derrière du texte sarcelle (badges du module périnatal). */
+  --osme-danger: #B42318;  /* Erreurs, suppression, alertes de décès non notifiés, dépassement de délai. Jamais décoratif. */
+  --osme-danger-soft: #FDECEA;  /* Fond des messages d'erreur et badges « Urgent ». */
+  --osme-warning: #9A5B00;  /* Avertissements : dossier incomplet, revue en attente, délai proche. */
+  --osme-warning-soft: #FFF4DB;  /* Fond des avertissements et badges « En attente ». */
+  --osme-success: #1B7A43;  /* Confirmations : dossier validé, revue clôturée, enregistrement réussi. */
+  --osme-success-soft: #E6F4EC;  /* Fond des confirmations et badges « Validé ». */
+  --osme-info: #1F5FA6;  /* Information neutre, aide contextuelle, statut « Brouillon ». */
+  --osme-info-soft: #E7F0FA;  /* Fond des encadrés d'information neutre. */
+  --osme-focus: var(--osme-violet);
+  --osme-link: var(--osme-violet);
+  --osme-dv-1: #6B2FB3;  /* Série de données n°1 (série principale : décès maternels, indicateur OSME). */
+  --osme-dv-2: #B57600;  /* Série n°2 (comparaison, période précédente). Ajouter une étiquette directe. */
+  --osme-dv-3: #4F6382;  /* Série n°3 (référence nationale ou cible). */
+  --osme-dv-4: #0E8C88;  /* Série n°4 (décès périnatals, nouveau-nés). */
+  --osme-dv-5: #C0457A;  /* Série n°5. Au-delà de 5 séries, regrouper en « Autres ». */
+
+  --osme-font-display: "Lexend", "Segoe UI", system-ui, sans-serif;
+  --osme-font-sans: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --osme-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --osme-text-display: 600 48px/54px var(--osme-font-display);
+  --osme-text-h1: 600 36px/44px var(--osme-font-display);
+  --osme-text-h2: 600 28px/36px var(--osme-font-display);
+  --osme-text-h3: 500 22px/30px var(--osme-font-display);
+  --osme-text-kpi: 600 40px/44px var(--osme-font-display);
+  --osme-text-body-lg: 400 18px/28px var(--osme-font-sans);
+  --osme-text-body: 400 16px/24px var(--osme-font-sans);
+  --osme-text-label: 600 15px/20px var(--osme-font-sans);
+  --osme-text-small: 400 14px/20px var(--osme-font-sans);
+  --osme-text-caption: 400 13px/18px var(--osme-font-sans);
+
+  --osme-space-1: 4px;
+  --osme-space-2: 8px;
+  --osme-space-3: 12px;
+  --osme-space-4: 16px;
+  --osme-space-6: 24px;
+  --osme-space-8: 32px;
+  --osme-space-12: 48px;
+  --osme-space-16: 64px;
+  --osme-radius-sm: 8px;
+  --osme-radius-md: 14px;
+  --osme-radius-lg: 22px;
+  --osme-radius-pill: 999px;
+  --osme-shadow-sm: 0 2px 6px rgba(28, 23, 38, 0.06);
+  --osme-shadow-md: 0 10px 24px rgba(28, 23, 38, 0.08);
+  --osme-shadow-lg: 0 24px 60px rgba(28, 23, 38, 0.16);
+
+  /* Ponts vers Bootstrap 5 */
+  --bs-primary: #6B2FB3; --bs-primary-rgb: 107, 47, 179;
+  --bs-body-font-family: var(--osme-font-sans);
+  --bs-body-color: var(--osme-ink);
+  --bs-body-bg: var(--osme-surface);
+  --bs-border-color: var(--osme-line);
+  --bs-link-color: var(--osme-link);
+  --bs-link-color-rgb: 107, 47, 179;
+  --bs-border-radius: var(--osme-radius-sm);
+  --bs-danger: #B42318; --bs-success: #1B7A43; --bs-warning: #9A5B00; --bs-info: #1F5FA6;
+
+  /* Alias de migration : anciennes variables → nouveaux jetons (à supprimer en fin de migration) */
+  --osme-primary: var(--osme-violet);
+  --osme-primary-dark: var(--osme-violet-deep);
+  --osme-primary-soft: var(--osme-violet-soft);
+  --osme-purple: var(--osme-violet);
+  --osme-purple-dark: var(--osme-violet-deep);
+  --osme-purple-soft: var(--osme-violet-soft);
+  --osme-text: var(--osme-ink);
+  --osme-text-soft: var(--osme-ink-muted);
+  --osme-muted: var(--osme-ink-muted);
+  --osme-border: var(--osme-line);
+  --osme-bg: var(--osme-surface-alt);
+  --osme-bg-white: var(--osme-surface);
+  --osme-bg-soft: var(--osme-surface-alt);
+  --osme-radius: var(--osme-radius-md);
+  --navy: var(--osme-violet-deep);
+  --red: var(--osme-danger);
+}
+
+/* Thème sombre : opt-in via <html data-theme="dark"> (pas encore activé par défaut) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --osme-surface: #16121F;
+  --osme-surface-alt: #1F1A2B;
+  --osme-surface-raised: #241E31;
+  --osme-line: #362E45;
+  --osme-line-input: #7A7189;
+  --osme-ink: #EEEAF4;
+  --osme-ink-muted: #A9A2B6;
+  --osme-violet: #C9A6F2;
+  --osme-violet-logo: #B793E6;
+  --osme-violet-deep: #2A1F3D;
+  --osme-violet-soft: #2A1F3D;
+  --osme-on-violet: #16121F;
+  --osme-sarcelle: #5FD0CC;
+  --osme-sarcelle-soft: #0D2A2A;
+  --osme-danger: #FF8A80;
+  --osme-danger-soft: #3A1512;
+  --osme-warning: #F5C26B;
+  --osme-warning-soft: #33240A;
+  --osme-success: #7CD3A0;
+  --osme-success-soft: #0F2A1B;
+  --osme-info: #8DB8F0;
+  --osme-info-soft: #0F2033;
+  --osme-dv-1: #B793E6;
+  --osme-dv-2: #F0B94A;
+  --osme-dv-3: #9FB1CC;
+  --osme-dv-4: #4CC3BE;
+  --osme-dv-5: #E87FA8;
+  --bs-body-color: var(--osme-ink);
+  --bs-body-bg: var(--osme-surface);
+}
+
+/* Socle */
+body { font: var(--osme-text-body); color: var(--osme-ink); background: var(--osme-surface); }
+h1, .h1 { font: var(--osme-text-h1); }
+h2, .h2 { font: var(--osme-text-h2); }
+h3, .h3 { font: var(--osme-text-h3); }
+h1, h2, h3, .h1, .h2, .h3 { color: var(--osme-ink); letter-spacing: -0.01em; }
+table, .osme-num, .kpi-value { font-variant-numeric: tabular-nums; }
+a { color: var(--osme-link); }
+:focus-visible { outline: 2px solid var(--osme-focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Boutons Bootstrap alignés sur la charte */
+.btn { font: var(--osme-text-label); min-height: 44px; border-radius: var(--osme-radius-sm); }
+.btn-primary { --bs-btn-bg: var(--osme-violet); --bs-btn-border-color: var(--osme-violet); --bs-btn-color: var(--osme-on-violet); --bs-btn-hover-bg: var(--osme-violet-deep); --bs-btn-hover-border-color: var(--osme-violet-deep); --bs-btn-active-bg: var(--osme-violet-deep); }
+
+/* Badges de statut des dossiers */
+.osme-badge { display: inline-flex; align-items: center; gap: var(--osme-space-1); padding: 2px var(--osme-space-3); border-radius: var(--osme-radius-pill); font: 600 14px/20px var(--osme-font-sans); }
+.osme-badge--brouillon { color: var(--osme-info); background: var(--osme-info-soft); }
+.osme-badge--attente { color: var(--osme-warning); background: var(--osme-warning-soft); }
+.osme-badge--valide { color: var(--osme-success); background: var(--osme-success-soft); }
+.osme-badge--urgent { color: var(--osme-danger); background: var(--osme-danger-soft); }
+.osme-badge--perinatal { color: var(--osme-sarcelle); background: var(--osme-sarcelle-soft); }
+.osme-badge--osme { color: var(--osme-violet); background: var(--osme-violet-soft); }

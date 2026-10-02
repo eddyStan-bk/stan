@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { PARTNERS } from '../lib/site';
+
+const principles = [
+  {
+    icon: 'heart',
+    title: 'Dignité',
+    text: 'Chaque chiffre est une femme ou un enfant. Nous publions sans sensationnalisme et sans jamais exposer une personne.',
+  },
+  {
+    icon: 'eye',
+    title: 'Clarté',
+    text: 'Une donnée doit se lire en quelques secondes, y compris sur un téléphone et avec une connexion lente.',
+  },
+  {
+    icon: 'patch-check',
+    title: 'Confiance',
+    text: 'Sources, périodes, dates de mise à jour et méthodes sont toujours indiquées à côté des chiffres.',
+  },
+];
+
+const roles = [
+  { title: 'Collecteurs et agents de santé', text: 'notifient les décès survenus dans les formations sanitaires et les communautés.' },
+  { title: 'Superviseurs', text: 'vérifient les dossiers, organisent les revues et valident les données.' },
+  { title: 'Chercheurs', text: 'analysent les données autorisées pour éclairer les politiques de santé.' },
+  { title: 'Décideurs et partenaires', text: 's’appuient sur les indicateurs publiés pour orienter les actions.' },
+];
+---
+
+<BaseLayout
+  title="À propos"
+  description="L’Observatoire de santé de la mère et de l’enfant (OSME) : mission, fonctionnement, principes et partenaires."
+>
+  <div class="page-head">
+    <div class="container">
+      <h1>À propos de l’Observatoire</h1>
+      <p class="lead">
+        L’OSME collecte, vérifie et publie les données de mortalité maternelle et périnatale en République démocratique
+        du Congo, pour que chaque décès évitable soit compris et que des mesures soient prises.
+      </p>
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="mission">
+    <div class="container two-cols">
+      <SectionTitle id="mission" title="Notre mission" />
+      <div class="prose">
+        <p>
+          Trop de femmes meurent encore pendant la grossesse, l’accouchement ou les semaines qui suivent, et trop de
+          nouveau-nés ne survivent pas à leur première semaine. La plupart de ces décès sont évitables.
+        </p>
+        <p>
+          L’Observatoire de santé de la mère et de l’enfant met à la disposition des équipes de terrain une application
+          de surveillance pour notifier, revoir et valider chaque décès, et publie sur ce portail des indicateurs
+          agrégés, vérifiés et datés.
+        </p>
+        <p>
+          L’OSME est porté par l’École régionale de santé publique de l’Université catholique de Bukavu (ERSP-UCB),
+          avec Caritas Congo et la Coopération suisse.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="principes">
+    <div class="container">
+      <SectionTitle id="principes" title="Nos principes" />
+      <div class="grid grid--3">
+        {
+          principles.map((p) => (
+            <div class="card">
+              <Icon name={p.icon} size={24} class="accent-icon" />
+              <h3>{p.title}</h3>
+              <p class="muted">{p.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="acteurs">
+    <div class="container two-cols">
+      <SectionTitle id="acteurs" title="Qui fait vivre la surveillance" />
+      <ul class="roles">
+        {
+          roles.map((r) => (
+            <li>
+              <strong>{r.title}</strong> {r.text}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="partenaires">
+    <div class="container">
+      <SectionTitle id="partenaires" title="Partenaires" />
+      <div class="grid grid--3">
+        {
+          PARTNERS.map((partner) => (
+            <div class="card">
+              <p class="partner__role caption">{partner.role}</p>
+              <h3>{partner.name}</h3>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="contact">
+    <div class="container two-cols">
+      <SectionTitle id="contact" title="Nous contacter" />
+      <div class="prose">
+        <p>
+          Pour une question sur les données publiées, une demande d’accès à des fins de recherche ou un partenariat,
+          contactez l’équipe de l’OSME à l’École régionale de santé publique de l’Université catholique de Bukavu.
+        </p>
+        <p>
+          Les professionnels de santé participant à la surveillance accèdent à l’application depuis l’<a href="/login"
+            >espace de surveillance</a
+          >.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @media (min-width: 1024px) {
+    .two-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: var(--osme-space-6);
+    }
+  }
+
+  .card h3 {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .card :global(.accent-icon) {
+    color: var(--osme-violet);
+    margin-bottom: var(--osme-space-3);
+  }
+
+  .partner__role {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .roles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 75ch;
+  }
+
+  .roles li {
+    padding-block: var(--osme-space-4);
+    border-bottom: 1px solid var(--osme-line);
+  }
+
+  .roles li:first-child {
+    padding-top: 0;
+  }
+</style>

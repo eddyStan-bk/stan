@@ -1,0 +1,9 @@
+# Fins de ligne LF partout (CLAUDE.md, problème connu n° 8).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary
+*.zip binary

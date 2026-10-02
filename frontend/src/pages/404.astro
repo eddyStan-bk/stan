@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout title="Page introuvable" searchable={false}>
+  <section class="section">
+    <div class="container prose">
+      <h1>Page introuvable</h1>
+      <p class="lead">L’adresse demandée n’existe pas ou a été déplacée.</p>
+      <p>
+        <a class="button button--primary" href="/">
+          <Icon name="house" />
+          Revenir à l’accueil
+        </a>
+      </p>
+      <p>Vous pouvez aussi consulter les <a href="/indicateurs/">indicateurs</a> ou les <a href="/publications/">publications</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

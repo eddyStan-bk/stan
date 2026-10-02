@@ -1,0 +1,46 @@
+---
+/** État vide : aucune donnée publiée (API indisponible ou agrégats pas encore validés). */
+import Icon from './Icon.astro';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Les indicateurs validés seront publiés ici' } = Astro.props;
+---
+
+<div class="empty card" role="status">
+  <Icon name="info-circle" size={24} />
+  <div>
+    <p class="empty__title">{title}</p>
+    <p class="muted">
+      <slot>
+        Les chiffres sont mis en ligne après vérification et validation des dossiers par l’équipe de l’OSME. Consultez
+        la <a href="/publications/note-methodologique/">note méthodologique</a> pour savoir comment ils sont produits.
+      </slot>
+    </p>
+  </div>
+</div>
+
+<style>
+  .empty {
+    display: flex;
+    gap: var(--osme-space-4);
+    background: var(--osme-info-soft);
+    border-color: var(--osme-info-soft);
+    color: var(--osme-ink);
+  }
+
+  .empty > :global(.icon) {
+    color: var(--osme-info);
+    margin-top: 2px;
+  }
+
+  .empty__title {
+    font: var(--osme-text-label);
+    margin-bottom: var(--osme-space-1);
+  }
+
+  .empty p:last-child {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,352 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Arc from '../components/Arc.astro';
+import ChartBlock from '../components/ChartBlock.astro';
+import EmptyState from '../components/EmptyState.astro';
+import Icon from '../components/Icon.astro';
+import KpiCard from '../components/KpiCard.astro';
+import PublicationCard from '../components/PublicationCard.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import { loadIndicators } from '../lib/data';
+import { kpis, maternalTrend, periodLabel, perinatalTrend, updatedLabel } from '../lib/indicators-view';
+import { getPublications } from '../lib/publications';
+import { LOGIN_URL, SITE_SHORT } from '../lib/site';
+
+const data = await loadIndicators();
+const publications = (await getPublications()).slice(0, 3);
+
+const steps = [
+  {
+    icon: 'bell',
+    title: 'Notifier',
+    text: 'Chaque décès maternel ou périnatal est signalé par la formation sanitaire ou la communauté, puis saisi par un collecteur.',
+  },
+  {
+    icon: 'search-heart',
+    title: 'Vérifier',
+    text: 'Un superviseur contrôle la complétude et la cohérence du dossier : lieu, dates, circonstances.',
+  },
+  {
+    icon: 'people',
+    title: 'Revoir',
+    text: 'Le comité de revue établit la cause du décès et les facteurs évitables, puis propose des mesures correctrices.',
+  },
+  {
+    icon: 'bar-chart-line',
+    title: 'Publier',
+    text: 'Les dossiers validés sont agrégés par mois et par zone de santé, puis publiés ici avec leur source.',
+  },
+];
+---
+
+<BaseLayout title={SITE_SHORT}>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <p class="hero__kicker">Observatoire de santé de la mère et de l’enfant</p>
+        <h1 class="display">Comprendre chaque décès de mère et de nouveau-né pour mieux les prévenir</h1>
+        <Arc width={96} />
+        <p class="lead">
+          L’OSME rassemble, vérifie et publie les données sur la mortalité maternelle et périnatale en République
+          démocratique du Congo, avec l’École régionale de santé publique de l’Université catholique de Bukavu.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="/indicateurs/">
+            <Icon name="bar-chart-line" />
+            Consulter les indicateurs
+          </a>
+          <a class="button button--discreet" href="/publications/note-methodologique/">Lire la note méthodologique</a>
+        </div>
+      </div>
+
+      <aside class="hero__panel card" aria-labelledby="engagements">
+        <h2 id="engagements" class="h3">Nos engagements</h2>
+        <ul>
+          <li>
+            <Icon name="patch-check" />
+            <span><strong>Des données validées.</strong> Seuls les dossiers vérifiés et revus sont comptés.</span>
+          </li>
+          <li>
+            <Icon name="shield-lock" />
+            <span><strong>Des agrégats uniquement.</strong> Aucune donnée individuelle n’est publiée.</span>
+          </li>
+          <li>
+            <Icon name="calendar-check" />
+            <span><strong>Des sources visibles.</strong> Chaque chiffre indique sa source, sa période et sa date.</span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="chiffres-cles">
+    <div class="container">
+      <SectionTitle
+        id="chiffres-cles"
+        title="Les chiffres clés"
+        intro={data ? `${data.scope[0].toUpperCase()}${data.scope.slice(1)}, ${periodLabel(data)}. Mise à jour le ${updatedLabel(data)}.` : undefined}
+      />
+      {
+        data ? (
+          <>
+            <div class="kpi-grid">
+              {kpis(data).map((kpi) => (
+                <KpiCard {...kpi} />
+              ))}
+            </div>
+            <div class="grid grid--2 charts">
+              {[maternalTrend(data), perinatalTrend(data)].map((chart) => (
+                <ChartBlock {...chart} source={data.source} period={periodLabel(data)} updated={updatedLabel(data)} />
+              ))}
+            </div>
+            <p class="see-all">
+              <a class="button button--discreet" href="/indicateurs/">
+                Voir tous les indicateurs
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </p>
+          </>
+        ) : (
+          <EmptyState />
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="surveillance">
+    <div class="container">
+      <SectionTitle
+        id="surveillance"
+        title="Comment fonctionne la surveillance"
+        intro="Du signalement à la publication, chaque décès suit le même circuit, inspiré de la surveillance des décès maternels, périnatals et riposte."
+      />
+      <ol class="steps">
+        {
+          steps.map((step, index) => (
+            <li class="card">
+              <span class="steps__number" aria-hidden="true">
+                {index + 1}
+              </span>
+              <Icon name={step.icon} size={24} class="steps__icon" />
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="publications">
+    <div class="container">
+      <SectionTitle id="publications" title="Publications récentes" />
+      {
+        publications.length > 0 ? (
+          <div class="grid grid--3">
+            {publications.map((pub) => (
+              <PublicationCard publication={pub} headingLevel="h3" />
+            ))}
+          </div>
+        ) : (
+          <p class="muted">Aucune publication pour le moment.</p>
+        )
+      }
+      <p class="see-all">
+        <a class="button button--discreet" href="/publications/">
+          Toutes les publications
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="acces">
+    <div class="container">
+      <div class="access card">
+        <div>
+          <h2 id="acces" class="h3">Vous participez à la surveillance ?</h2>
+          <p class="muted">
+            Collecteurs, superviseurs, agents de santé et chercheurs autorisés : notifiez, revoyez et validez les
+            dossiers dans l’espace sécurisé.
+          </p>
+        </div>
+        <a class="button button--secondary" href={LOGIN_URL}>
+          <Icon name="box-arrow-in-right" />
+          Se connecter à l’espace de surveillance
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--osme-space-12);
+    border-bottom: 1px solid var(--osme-line);
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--osme-space-16);
+    }
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: var(--osme-space-8);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--osme-space-16);
+    }
+  }
+
+  .hero__kicker {
+    font: var(--osme-text-label);
+    color: var(--osme-violet);
+    margin-bottom: var(--osme-space-3);
+  }
+
+  .hero h1 {
+    margin-bottom: var(--osme-space-3);
+  }
+
+  @media (max-width: 767.98px) {
+    .hero h1 {
+      font: var(--osme-text-h1);
+    }
+  }
+
+  .hero .lead {
+    margin-top: var(--osme-space-6);
+    max-width: 60ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--osme-space-2);
+    margin-top: var(--osme-space-6);
+  }
+
+  .hero__panel {
+    background: var(--osme-violet-soft);
+    border-color: var(--osme-violet-soft);
+    border-radius: var(--osme-radius-lg);
+  }
+
+  .hero__panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--osme-space-4);
+  }
+
+  .hero__panel li {
+    display: flex;
+    gap: var(--osme-space-3);
+  }
+
+  .hero__panel li :global(.icon) {
+    color: var(--osme-violet);
+    margin-top: 2px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    gap: var(--osme-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    .kpi-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--osme-space-6);
+    }
+  }
+
+  .charts {
+    margin-top: var(--osme-space-8);
+  }
+
+  .see-all {
+    margin: var(--osme-space-6) 0 0;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--osme-space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--osme-space-6);
+    }
+  }
+
+  .steps li {
+    position: relative;
+  }
+
+  .steps__number {
+    position: absolute;
+    top: var(--osme-space-4);
+    right: var(--osme-space-4);
+    font: var(--osme-text-h3);
+    color: var(--osme-ink-muted);
+  }
+
+  .steps :global(.steps__icon) {
+    color: var(--osme-violet);
+    margin-bottom: var(--osme-space-3);
+  }
+
+  .steps h3 {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .steps p {
+    margin: 0;
+    color: var(--osme-ink-muted);
+  }
+
+  .access {
+    display: flex;
+    flex-direction: column;
+    gap: var(--osme-space-4);
+    border-radius: var(--osme-radius-lg);
+    background: var(--osme-surface-alt);
+  }
+
+  @media (min-width: 768px) {
+    .access {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--osme-space-8);
+    }
+  }
+
+  .access h2 {
+    margin-bottom: var(--osme-space-2);
+  }
+
+  .access p {
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .access .button {
+    white-space: normal;
+    text-align: center;
+  }
+</style>

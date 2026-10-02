@@ -1,0 +1,384 @@
+/*
+ * Portail public OSME — styles globaux.
+ * Source unique des jetons : assets/css/osme-tokens.css (polices comprises).
+ * Aucune couleur, police ou ombre en dur ici : uniquement des variables --osme-*.
+ */
+@import '../../../assets/css/osme-tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--osme-space-16);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+figure {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin-bottom: var(--osme-space-4);
+  text-wrap: balance;
+}
+
+p,
+ul,
+ol {
+  margin-bottom: var(--osme-space-4);
+}
+
+/* Liens soulignés dans le texte courant (charte : --osme-link). */
+a {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--osme-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--osme-surface);
+}
+
+.display {
+  font: var(--osme-text-display);
+  letter-spacing: -0.02em;
+  color: var(--osme-ink);
+}
+
+.lead {
+  font: var(--osme-text-body-lg);
+  color: var(--osme-ink-muted);
+}
+
+.small {
+  font: var(--osme-text-small);
+}
+
+.caption {
+  font: var(--osme-text-caption);
+  color: var(--osme-ink-muted);
+}
+
+.muted {
+  color: var(--osme-ink-muted);
+}
+
+.prose {
+  max-width: 75ch;
+}
+
+.prose h2 {
+  margin-top: var(--osme-space-12);
+}
+
+.prose h3 {
+  margin-top: var(--osme-space-8);
+}
+
+.prose li + li {
+  margin-top: var(--osme-space-2);
+}
+
+.prose blockquote {
+  margin: var(--osme-space-6) 0;
+  padding: var(--osme-space-4) var(--osme-space-6);
+  background: var(--osme-violet-soft);
+  border-radius: var(--osme-radius-md);
+  color: var(--osme-ink);
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--osme-space-6);
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  padding: var(--osme-space-3);
+  border-bottom: 1px solid var(--osme-line);
+}
+
+.prose th {
+  background: var(--osme-surface-alt);
+  font: var(--osme-text-label);
+}
+
+/* Mise en page */
+.container {
+  width: 100%;
+  max-width: calc(1200px + 2 * var(--osme-space-4));
+  margin-inline: auto;
+  padding-inline: var(--osme-space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: calc(1200px + 2 * var(--osme-space-6));
+    padding-inline: var(--osme-space-6);
+  }
+}
+
+.section {
+  padding-block: var(--osme-space-12);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--osme-space-16);
+  }
+}
+
+.section--alt {
+  background: var(--osme-surface-alt);
+}
+
+.page-head {
+  padding-block: var(--osme-space-12) var(--osme-space-8);
+  border-bottom: 1px solid var(--osme-line);
+}
+
+.page-head h1 {
+  margin-bottom: var(--osme-space-3);
+}
+
+.page-head .lead {
+  max-width: 65ch;
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  gap: var(--osme-space-6);
+}
+
+@media (min-width: 768px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Carte de contenu (application et portail) : filet et surface surélevée, pas d'ombre au repos. */
+.card {
+  background: var(--osme-surface-raised);
+  border: 1px solid var(--osme-line);
+  border-radius: var(--osme-radius-md);
+  padding: var(--osme-space-4);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--osme-space-6);
+  }
+}
+
+/* Boutons (hauteur 44 px, libellé 15 px 600). Un seul bouton principal par écran. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--osme-space-2);
+  min-height: 44px;
+  padding: var(--osme-space-2) var(--osme-space-4);
+  border-radius: var(--osme-radius-sm);
+  border: 1px solid transparent;
+  font: var(--osme-text-label);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.button--primary {
+  background: var(--osme-violet);
+  border-color: var(--osme-violet);
+  color: var(--osme-on-violet);
+}
+
+.button--primary:hover {
+  background: var(--osme-violet-deep);
+  border-color: var(--osme-violet-deep);
+}
+
+.button--secondary {
+  background: var(--osme-surface-raised);
+  border-color: var(--osme-line-input);
+  color: var(--osme-ink);
+}
+
+.button--secondary:hover {
+  border-color: var(--osme-violet);
+  color: var(--osme-violet);
+}
+
+.button--discreet {
+  background: none;
+  color: var(--osme-violet);
+  padding-inline: var(--osme-space-2);
+}
+
+.button--discreet:hover {
+  text-decoration: underline;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--osme-space-2);
+  left: var(--osme-space-2);
+  z-index: 100;
+  padding: var(--osme-space-3) var(--osme-space-4);
+  background: var(--osme-violet);
+  color: var(--osme-on-violet);
+  border-radius: var(--osme-radius-sm);
+  font: var(--osme-text-label);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Tableaux de données : en-tête surface-alt, filets horizontaux, chiffres tabulaires à droite. */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--osme-text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table caption {
+  text-align: left;
+  font: var(--osme-text-caption);
+  color: var(--osme-ink-muted);
+  padding-bottom: var(--osme-space-2);
+}
+
+.data-table th,
+.data-table td {
+  height: 48px;
+  padding: var(--osme-space-2) var(--osme-space-3);
+  border-bottom: 1px solid var(--osme-line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.data-table thead th {
+  background: var(--osme-surface-alt);
+  font: var(--osme-text-label);
+  color: var(--osme-ink);
+}
+
+.data-table .num {
+  text-align: right;
+}
+
+.data-table tbody th {
+  font-weight: 400;
+}
+
+/* Sur mobile, chaque ligne devient une carte empilée (sauf tableaux d'analyse : .data-table--scroll). */
+@media (max-width: 767.98px) {
+  .data-table--stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .data-table--stack tr {
+    display: block;
+    padding: var(--osme-space-3) 0;
+    border-bottom: 1px solid var(--osme-line);
+  }
+
+  .data-table--stack th,
+  .data-table--stack td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--osme-space-4);
+    height: auto;
+    min-height: 32px;
+    padding: var(--osme-space-1) 0;
+    border: 0;
+  }
+
+  .data-table--stack tbody th {
+    font: var(--osme-text-label);
+  }
+
+  .data-table--stack td::before {
+    content: attr(data-label);
+    color: var(--osme-ink-muted);
+    text-align: left;
+  }
+}
+
+.table-scroll {
+  overflow-x: auto;
+}

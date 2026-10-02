@@ -1,0 +1,136 @@
+---
+/** Pied de page violet-deep : partenaires, liens institutionnels, rappel sur la confidentialité. */
+import Icon from './Icon.astro';
+import { LOGIN_URL, PARTNERS, SITE_NAME, SITE_SHORT } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <section aria-labelledby="footer-about">
+        <h2 id="footer-about" class="site-footer__title">{SITE_SHORT}</h2>
+        <p>{SITE_NAME}. Surveillance des décès maternels et périnatals en République démocratique du Congo.</p>
+        <p class="site-footer__note">
+          <Icon name="shield-lock" size={16} />
+          Le portail ne publie que des données agrégées. Les effectifs inférieurs à 5 cas par zone de santé et par
+          mois sont masqués.
+        </p>
+      </section>
+
+      <section aria-labelledby="footer-partners">
+        <h2 id="footer-partners" class="site-footer__title">Partenaires</h2>
+        <ul class="site-footer__partners">
+          {
+            PARTNERS.map((partner) => (
+              <li>
+                <span class="site-footer__partner">{partner.short}</span>
+                <span class="site-footer__role">{partner.role}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <nav aria-labelledby="footer-links">
+        <h2 id="footer-links" class="site-footer__title">Liens utiles</h2>
+        <ul class="site-footer__links">
+          <li><a href="/indicateurs/">Indicateurs</a></li>
+          <li><a href="/publications/">Publications</a></li>
+          <li><a href="/a-propos/">À propos</a></li>
+          <li><a href="/mentions-legales/">Mentions légales</a></li>
+          <li><a href="/confidentialite/">Protection des données</a></li>
+          <li><a href={LOGIN_URL}>Espace de surveillance (accès réservé)</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <p class="site-footer__copy">© {year} {SITE_SHORT} — ERSP-UCB, Bukavu.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    --footer-ink: var(--osme-on-violet);
+    margin-top: auto;
+    padding-block: var(--osme-space-12) var(--osme-space-8);
+    background: var(--osme-violet-deep);
+    color: var(--footer-ink);
+  }
+
+  /* Thème sombre : le texte sur violet-deep passe en ink (charte). */
+  :global(:root[data-theme='dark']) .site-footer {
+    --footer-ink: var(--osme-ink);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--osme-space-8);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: 1.4fr 1fr 1fr;
+    }
+  }
+
+  .site-footer__title {
+    font: var(--osme-text-h3);
+    color: var(--footer-ink);
+    margin-bottom: var(--osme-space-4);
+  }
+
+  .site-footer__grid p {
+    max-width: 48ch;
+  }
+
+  .site-footer__note {
+    display: flex;
+    gap: var(--osme-space-2);
+    font: var(--osme-text-small);
+  }
+
+  .site-footer__note :global(.icon) {
+    margin-top: 2px;
+  }
+
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-footer__partners li {
+    display: flex;
+    flex-direction: column;
+    padding-block: var(--osme-space-2);
+  }
+
+  .site-footer__partner {
+    font: 600 18px/24px var(--osme-font-display);
+  }
+
+  .site-footer__role {
+    font: var(--osme-text-small);
+  }
+
+  .site-footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--footer-ink);
+  }
+
+  .site-footer__links a:focus-visible {
+    outline-color: var(--footer-ink);
+    box-shadow: none;
+  }
+
+  .site-footer__copy {
+    margin: var(--osme-space-8) 0 0;
+    padding-top: var(--osme-space-6);
+    border-top: 1px solid currentColor;
+    font: var(--osme-text-caption);
+  }
+</style>

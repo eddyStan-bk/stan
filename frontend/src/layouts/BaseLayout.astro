@@ -1,0 +1,84 @@
+---
+/** Gabarit commun du portail public : méta, polices (via les jetons), en-tête, pied de page. */
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { isDemo } from '../lib/data';
+import { HAS_LOGO_MARK, LOGO_MARK_URL, SITE_DESCRIPTION, SITE_SHORT } from '../lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Exclut la page de l'index de recherche Pagefind (404, recherche…). */
+  searchable?: boolean;
+  /** Type Open Graph. */
+  ogType?: 'website' | 'article';
+}
+
+const { title, description = SITE_DESCRIPTION, searchable = true, ogType = 'website' } = Astro.props;
+const fullTitle = title === SITE_SHORT ? title : `${title} — ${SITE_SHORT}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {HAS_LOGO_MARK && <link rel="icon" href={LOGO_MARK_URL} type="image/png" />}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={SITE_SHORT} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {isDemo && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="generator" content={Astro.generator} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    {
+      isDemo && (
+        <div class="demo-banner" role="note">
+          <div class="container">
+            <Icon name="exclamation-triangle" size={20} />
+            <span>
+              <strong>Version de démonstration.</strong> Les chiffres affichés sont fictifs : ne pas les citer ni
+              les diffuser.
+            </span>
+          </div>
+        </div>
+      )
+    }
+    <Header />
+    <main id="contenu" tabindex="-1" data-pagefind-body={searchable ? '' : undefined}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .demo-banner {
+    background: var(--osme-warning-soft);
+    color: var(--osme-warning);
+    border-bottom: 1px solid var(--osme-line);
+    font: var(--osme-text-small);
+  }
+
+  .demo-banner .container {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--osme-space-2);
+    padding-block: var(--osme-space-3);
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>
